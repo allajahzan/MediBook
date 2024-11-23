@@ -1,0 +1,18 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+    font-family: "Josefin Sans", sans-serif;
+    font-optical-sizing: auto;
+}
+ 
+html {
+    scrollbar-width: none;
+}
+
+div, img {
+    outline: none; 
+    -webkit-user-drag: none; 
+    user-select: none; 
+}
