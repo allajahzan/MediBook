@@ -10,8 +10,8 @@ common/node_modules
 common/.gitignore
 common/README.md
 
-#auth
-services/auth/.env
-services/auth/node_modules
-services/auth/.gitignore
-services/auth/README.md
+#user
+services/user/.env
+services/user/node_modules
+services/user/.gitignore
+services/user/README.md

@@ -1,7 +1,7 @@
 {
   "name": "auth",
   "version": "1.0.0",
-  "description": "auth service",
+  "description": "user service",
   "main": "server.js",
   "scripts": {
     "build": "tsc",
