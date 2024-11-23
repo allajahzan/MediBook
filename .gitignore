@@ -3,3 +3,9 @@ services/web/.env
 services/web/node_modules
 services/web/.gitignore
 services/web/README.md
+
+#auth
+services/auth/.env
+services/auth/node_modules
+services/auth/.gitignore
+services/auth/README.md
