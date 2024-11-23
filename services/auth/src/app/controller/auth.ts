@@ -5,6 +5,20 @@ import { Request, Response } from 'express'
 export const userLogin = async(req:Request, res:Response) : Promise<any> =>{
     try{
 
+        
+
+    }catch(err){
+        console.log(err)
+    }
+}
+
+
+// user login
+export const userSignup = async(req:Request, res:Response) : Promise<any> =>{
+    try{
+
+        
+
     }catch(err){
         console.log(err)
     }

@@ -1,6 +1,6 @@
 {
-  "name": "common",
-  "version": "1.0.0",
+  "name": "@mb-medibook/common",
+  "version": "1.0.1",
   "description": "common module",
   "main": "index.js",
   "scripts": {
@@ -15,5 +15,9 @@
     "@types/express": "^5.0.0",
     "ts-node": "^10.9.2",
     "typescript": "^5.7.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/allajahzan/Common-module-Medibook.git"
   }
 }
