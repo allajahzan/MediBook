@@ -4,6 +4,12 @@ services/web/node_modules
 services/web/.gitignore
 services/web/README.md
 
+#common
+common/.env
+common/node_modules
+common/.gitignore
+common/README.md
+
 #auth
 services/auth/.env
 services/auth/node_modules
