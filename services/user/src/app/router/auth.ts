@@ -1,12 +1,15 @@
 import { Router } from "express";
-import { userLogin, userSignup } from "../controller/auth";
+import { userLogin, clientSignup, doctorSignup } from "../controller/auth";
 
-const router = Router()
+const router = Router();
 
 // user login
-router.post('/login', userLogin)
+router.post("/login", userLogin);
 
 // user singup
-router.post('/signup', userSignup)
+router.post("/client/signup", clientSignup);
 
-export { router as authRoute }
+// doctor singup
+router.post("/doctor/signup", doctorSignup);
+
+export { router as authRoute };

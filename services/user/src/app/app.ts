@@ -1,16 +1,17 @@
-import express from 'express'
-import { appRouter } from '../app/router/index'
-import morgan from 'morgan'
+import express from "express";
+import { appRouter } from "./router/route";
+import morgan from "morgan";
+import { ErrorHandler } from "@mb-medibook/common";
 
 // create an app
-const app = express()
+const app = express();
 
 // middlewares
-app.use(morgan('dev'))
-app.use(express.json())
-app.use('/', appRouter)
-app.all('*', () => {
-    throw new Error('Not found')
-})
+app.use(morgan("dev"));
+app.use(express.json());
+app.use("/", appRouter);
 
-export default app
+// error handler
+app.use(ErrorHandler);
+
+export default app;
