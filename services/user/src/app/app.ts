@@ -7,7 +7,6 @@ const app = express()
 
 // middlewares
 app.use(morgan('dev'))
-app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
 app.use('/', appRouter)
 app.all('*', () => {
