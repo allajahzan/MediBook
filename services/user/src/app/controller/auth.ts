@@ -2,7 +2,7 @@ import User from "../schema/auth";
 import { NextFunction, Request, Response } from "express";
 import {
     ConflictError,
-    GenerateJwtAccessToken,
+    GenerateJwtToken,
     HashedPassword,
     HttpStatusCode,
     JWTPayloadType,
@@ -38,7 +38,7 @@ export const userLogin = async (
             role: user.role,
         };
 
-        const token = GenerateJwtAccessToken(
+        const token = GenerateJwtToken(
             payload,
             process.env.ACCESS_TOKEN_SECRET as string,
             "1m"
@@ -50,7 +50,10 @@ export const userLogin = async (
             path: "/",
         });
 
-        SendResponse(res, HttpStatusCode.OK, ResponseMessage.SUCCESS, token);
+        SendResponse(res, HttpStatusCode.OK, ResponseMessage.SUCCESS, {
+            token,
+            user,
+        });
     } catch (err) {
         next(err);
     }
