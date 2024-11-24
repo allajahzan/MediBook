@@ -2,10 +2,10 @@ import express from "express";
 import dotenv from "dotenv";
 import morgan from "morgan";
 import cors from "cors";
-import { Request, Response, NextFunction } from "express";
-import { verifyAccessToken } from "@mb-medibook/common";
+import { ErrorHandler } from "@mb-medibook/common";
 import { createProxyMiddleware } from "http-proxy-middleware";
-import { Authorization } from "./middleware/authorization";
+// import { Authorization } from "./middleware/authorization";
+import { envChecker } from "./config/env.checker";
 
 // create app
 const app = express();
@@ -33,33 +33,29 @@ app.use(
     })
 );
 
-// start server
-const startServer = () => {
-    try {
-        // reverse proxy - routing requests
-        app.use(
-            "/user",
-            createProxyMiddleware({ target: services.user, changeOrigin: true })
-        );
+// check env
+envChecker()
 
-        app.use(
-            "/doctor",
-            Authorization,
-            createProxyMiddleware({ target: services.user, changeOrigin: true })
-        );
-        app.use(
-            "/admin",
-            Authorization,
-            createProxyMiddleware({ target: services.user, changeOrigin: true })
-        );
+// reverse proxy - routing requests
+app.use(
+    "/user",
+    createProxyMiddleware({ target: services.user, changeOrigin: true })
+);
 
-        // listen port
-        app.listen(process.env.PORT, () => {
-            console.log("api gateway server is running on port 8080");
-        });
-    } catch (err: any) {
-        console.log(err.message);
-    }
-};
+app.use(
+    "/doctor",
+    createProxyMiddleware({ target: services.user, changeOrigin: true })
+);
 
-startServer();
+app.use(
+    "/admin",
+    createProxyMiddleware({ target: services.user, changeOrigin: true })
+);
+
+// global error handler
+app.use(ErrorHandler)
+
+// listen port
+app.listen(process.env.PORT, () => {
+    console.log("api gateway server is running on port 8080");
+});
