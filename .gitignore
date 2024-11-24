@@ -15,3 +15,9 @@ services/user/.env
 services/user/node_modules
 services/user/.gitignore
 services/user/README.md
+
+#user
+services/apiGateway/.env
+services/apiGateway/node_modules
+services/apiGateway/.gitignore
+services/apiGateway/README.md

@@ -9,9 +9,9 @@ const app = express()
 app.use(morgan('dev'))
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
-app.use('/api', appRouter)
+app.use('/', appRouter)
 app.all('*', () => {
-    throw new Error("asdf")
+    throw new Error('Not found')
 })
 
 export default app
