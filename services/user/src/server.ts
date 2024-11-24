@@ -1,16 +1,28 @@
 import app from "./app/app";
-import mongoose from "mongoose";
-import express from 'express'
 import dotenv from 'dotenv'
+import { MongoDBConnection } from '@mb-medibook/common'
+import { envChecker } from "./config/env.checker";
 
 // dotenv config
 dotenv.config()
 
-// http server
-const httpServer = express()
+const startServer = async () => {
+    try {
+        // env checker
+        envChecker()
 
-// listen port
-httpServer.listen(process.env.PORT, () => {
-    console.log(`server is running on port ${process.env.PORT}`)
-})
+        // mongodb connecion
+        const res = await MongoDBConnection(process.env.MONGO_URL as string)
+        console.log(res);
 
+        // listen port
+        app.listen(process.env.PORT, () => {
+            console.log(`server is running on port ${process.env.PORT}`)
+        })
+
+    } catch (err: any) {
+        console.log(err.message);
+    }
+}
+
+startServer()
