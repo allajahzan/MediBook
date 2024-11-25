@@ -2,17 +2,18 @@ import app from "./app/app";
 import dotenv from "dotenv";
 import { envChecker } from "./config/env.check";
 import { MongoDBConnection } from "@mb-medibook/common";
+import { rabbitmq } from "./config/rabbitmq";
 
 // env config
 dotenv.config();
 
-const startServer = async () => {
+const startServer = async (): Promise<void> => {
     try {
         // env checker
         envChecker();
 
         // rabbitmq connection
-        
+        await rabbitmq.connect();
 
         // mongodb connection
         await MongoDBConnection(process.env.MONGO_URL as string);
@@ -26,4 +27,4 @@ const startServer = async () => {
     }
 };
 
-startServer()
+startServer();

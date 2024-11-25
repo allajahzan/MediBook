@@ -7,7 +7,7 @@ class RabbitMQ {
     constructor() { }
 
     // get channel
-    get channel() : amqp.Channel {
+    get channel(): amqp.Channel {
         if (!this._channel)
             throw new Error("cannot access rabbitmq before connection");
         return this._channel;
