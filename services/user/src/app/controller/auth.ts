@@ -43,14 +43,8 @@ export const userLogin = async (
         const token = GenerateJwtToken(
             payload,
             process.env.ACCESS_TOKEN_SECRET as string,
-            "1m"
+            "5m"
         );
-
-        res.cookie("accessToken", token, {
-            httpOnly: true,
-            sameSite: "none",
-            path: "/",
-        });
 
         SendResponse(res, HttpStatusCode.OK, ResponseMessage.SUCCESS, {
             token,

@@ -4,7 +4,6 @@ import morgan from "morgan";
 import cors from "cors";
 import { ErrorHandler, VerifyAccessToken } from "@mb-medibook/common";
 import { createProxyMiddleware } from "http-proxy-middleware";
-// import { Authorization } from "./middleware/authorization";
 import { envChecker } from "./config/env.checker";
 
 // create app
@@ -45,13 +44,13 @@ app.use(
 app.use(
     "/doctor",
     VerifyAccessToken(process.env.ACCESS_TOKEN_SECRET as string),
-    createProxyMiddleware({ target: services.user, changeOrigin: true })
+    createProxyMiddleware({ target: services.doctor, changeOrigin: true })
 );
 
 app.use(
     "/admin",
     VerifyAccessToken(process.env.ACCESS_TOKEN_SECRET as string),
-    createProxyMiddleware({ target: services.user, changeOrigin: true })
+    createProxyMiddleware({ target: services.admin, changeOrigin: true })
 );
 
 // global error handler
