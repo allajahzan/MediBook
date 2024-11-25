@@ -24,7 +24,7 @@ class RabbitMQ {
                 this.connect();
             });
         } catch (err: any) {
-            console.log(err.message);
+            throw new Error(err)
         }
     }
 }
