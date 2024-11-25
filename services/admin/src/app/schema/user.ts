@@ -5,13 +5,13 @@ export enum DoctorStatus {
     REJECTED = "rejected",
 }
 
-interface UserType {
+export interface UserType {
     userId: string;
     name: string;
     email: string;
     role: string;
     isBlock: boolean;
-    status?: string;
+    status: string | null;
 }
 
 const userSchema = new Schema<UserType>(
@@ -38,16 +38,7 @@ const userSchema = new Schema<UserType>(
         },
         status: {
             type: String,
-            enum: ["pending", "approved", "rejected"],
-            default: "pending",
-            validate: {
-                validator: function (value: string | undefined) {
-                    return this.role === "doctor" ? !!value : !value;
-                },
-                message: () => {
-                    console.log("status is only allowed for users with role doctor");
-                },
-            },
+            required : false
         },
     },
     { timestamps: true }

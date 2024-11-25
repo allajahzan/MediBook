@@ -11,6 +11,8 @@ import {
     SendResponse,
     VerifyPassword,
 } from "@mb-medibook/common";
+import { UserCreatedProducer } from "../messaging/producer/user.created";
+import { rabbitmq } from "../../config/rabbitmq";
 
 // user login
 export const userLogin = async (
@@ -78,9 +80,12 @@ export const clientSignup = async (
             name,
             email,
             password: hashedPassword,
-            role: "doctor",
+            role: "client",
         });
         await newUser.save();
+
+        // rabbitmq producer
+        new UserCreatedProducer(rabbitmq.channel, newUser).publish()
 
         SendResponse(res, HttpStatusCode.CREATED, ResponseMessage.CREATED, newUser);
     } catch (err) {
@@ -107,9 +112,12 @@ export const doctorSignup = async (
             name,
             email,
             password: hashedPassword,
-            role: "client",
+            role: "doctor",
         });
         await newUser.save();
+
+        // rabbitmq producer
+        new UserCreatedProducer(rabbitmq.channel, newUser).publish()
 
         SendResponse(res, HttpStatusCode.CREATED, ResponseMessage.CREATED, newUser);
     } catch (err) {

@@ -2,7 +2,7 @@ import express from "express";
 import dotenv from "dotenv";
 import morgan from "morgan";
 import cors from "cors";
-import { ErrorHandler } from "@mb-medibook/common";
+import { ErrorHandler, VerifyAccessToken } from "@mb-medibook/common";
 import { createProxyMiddleware } from "http-proxy-middleware";
 // import { Authorization } from "./middleware/authorization";
 import { envChecker } from "./config/env.checker";
@@ -44,11 +44,13 @@ app.use(
 
 app.use(
     "/doctor",
+    VerifyAccessToken(process.env.ACCESS_TOKEN_SECRET as string),
     createProxyMiddleware({ target: services.user, changeOrigin: true })
 );
 
 app.use(
     "/admin",
+    VerifyAccessToken(process.env.ACCESS_TOKEN_SECRET as string),
     createProxyMiddleware({ target: services.user, changeOrigin: true })
 );
 
