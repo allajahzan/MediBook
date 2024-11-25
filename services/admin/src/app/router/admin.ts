@@ -1,6 +1,10 @@
 import { Router } from "express";
-import {} from '../controller/admin'
+import { getClients } from '../controller/admin'
 
 const router = Router()
 
-export {router as adminRoute}
+// get users list
+router.get('/clients', getClients)
+
+
+export { router as adminRoute }
