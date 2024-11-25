@@ -7,7 +7,7 @@ import { rabbitmq } from "./config/rabbitmq";
 // dotenv config
 dotenv.config();
 
-const startServer = async () => {
+const startServer = async (): Promise<void> => {
     try {
         // env checker
         envChecker();
