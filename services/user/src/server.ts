@@ -1,28 +1,30 @@
 import app from "./app/app";
-import dotenv from 'dotenv'
-import { MongoDBConnection } from '@mb-medibook/common'
-import { envChecker } from "./config/env.checker";
+import dotenv from "dotenv";
+import { MongoDBConnection } from "@mb-medibook/common";
+import { envChecker } from "./config/env.check";
+import { rabbitmq } from "./config/rabbitmq";
 
 // dotenv config
-dotenv.config()
+dotenv.config();
 
 const startServer = async () => {
     try {
         // env checker
-        envChecker()
+        envChecker();
+
+        // rabbimq connection
+        await rabbitmq.connect();
 
         // mongodb connecion
-        const res = await MongoDBConnection(process.env.MONGO_URL as string)
-        console.log(res);
+        await MongoDBConnection(process.env.MONGO_URL as string);
 
         // listen port
         app.listen(process.env.PORT, () => {
-            console.log(`server is running on port ${process.env.PORT}`)
-        })
-
+            console.log(`server is running on port ${process.env.PORT}`);
+        });
     } catch (err: any) {
         console.log(err.message);
     }
-}
+};
 
-startServer()
+startServer();

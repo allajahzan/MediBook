@@ -11,7 +11,8 @@
   "author": "allaj",
   "license": "ISC",
   "dependencies": {
-    "@mb-medibook/common": "^1.0.34",
+    "@mb-medibook/common": "^1.0.38",
+    "amqplib": "^0.10.5",
     "dotenv": "^16.4.5",
     "express": "^4.21.1",
     "jsonwebtoken": "^9.0.2",
@@ -19,6 +20,7 @@
     "morgan": "^1.10.0"
   },
   "devDependencies": {
+    "@types/amqplib": "^0.10.5",
     "@types/express": "^5.0.0",
     "@types/jsonwebtoken": "^9.0.7",
     "@types/mongoose": "^5.11.96",
