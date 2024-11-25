@@ -1,11 +1,11 @@
 import { model, Schema } from "mongoose";
 
-export enum doctorStatus {
+export enum DoctorStatus {
     APPROVED = "approved",
     REJECTED = "rejected",
 }
 
-interface userType {
+interface UserType {
     userId: string;
     name: string;
     email: string;
@@ -14,7 +14,7 @@ interface userType {
     status?: string;
 }
 
-const userSchema = new Schema<userType>(
+const userSchema = new Schema<UserType>(
     {
         userId: {
             type: String,
@@ -53,5 +53,5 @@ const userSchema = new Schema<userType>(
     { timestamps: true }
 );
 
-const User = model<userType>("User", userSchema);
+const User = model<UserType>("User", userSchema);
 export default User;

@@ -1,9 +1,9 @@
 import { Router } from "express";
-import { adminRoute } from "./admin";
+import { userRoute } from "./user";
 
 const router = Router()
 
 // user route
-router.use('/admin', adminRoute)
+router.use('/', userRoute)
 
 export {router as appRouter}

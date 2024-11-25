@@ -5,7 +5,7 @@ import {
     ResponseMessage,
     SendResponse,
 } from "@mb-medibook/common";
-import User, { doctorStatus } from "../schema/user";
+import User, { DoctorStatus } from "../schema/user";
 import { NextFunction, Request, Response } from "express";
 
 // get clients
@@ -36,6 +36,24 @@ export const getDoctors = async (
     }
 };
 
+// get doctor
+export const getDoctor = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+): Promise<any> => {
+    try {
+        const docId = req.params.id;
+
+        const doctor = await User.findById(docId);
+        if (!doctor) throw new NotFoundError();
+
+        SendResponse(res, HttpStatusCode.OK, ResponseMessage.SUCCESS, doctor);
+    } catch (err) {
+        next(err);
+    }
+};
+
 // block and unblock users
 export const blockAndUnblock = async (
     req: Request,
@@ -43,7 +61,7 @@ export const blockAndUnblock = async (
     next: NextFunction
 ): Promise<any> => {
     try {
-        const userId = req.params.userId;
+        const userId = req.params.id;
 
         const user = await User.findById(userId);
         if (!user) throw new NotFoundError();
@@ -57,51 +75,40 @@ export const blockAndUnblock = async (
     }
 };
 
-// get doctor
-export const getDoctor = async (
+// approve doctor
+export const approveDoctor = async (
     req: Request,
     res: Response,
     next: NextFunction
 ): Promise<any> => {
     try {
-        const docId = req.params.docId;
+        const docId = req.params.id;
 
         const doctor = await User.findById(docId);
         if (!doctor) throw new NotFoundError();
 
-        SendResponse(res, HttpStatusCode.OK, ResponseMessage.SUCCESS, doctor);
+        doctor.status = DoctorStatus.REJECTED;
+        await doctor.save();
+
+        SendResponse(res, HttpStatusCode.OK, ResponseMessage.SUCCESS, null);
     } catch (err) {
         next(err);
     }
 };
 
-// approve and reject doctor
-export const approveAndRejectDoctor = async (
+// reject doctor
+export const rejectDoctor = async (
     req: Request,
     res: Response,
     next: NextFunction
 ): Promise<any> => {
     try {
-        const docId = req.params.docId;
-        const status: string = req.body.status;
-
-        if (
-            !Object.values(doctorStatus).includes(
-                status?.toLowerCase() as doctorStatus
-            )
-        ) {
-            return SendResponse(
-                res,
-                HttpStatusCode.NOT_FOUND,
-                ResponseMessage.NOT_FOUND,
-                null
-            );
-        }
+        const docId = req.params.id;
 
         const doctor = await User.findById(docId);
         if (!doctor) throw new NotFoundError();
 
-        doctor.status = status.toLowerCase() as doctorStatus;
+        doctor.status = DoctorStatus.REJECTED;
         await doctor.save();
 
         SendResponse(res, HttpStatusCode.OK, ResponseMessage.SUCCESS, null);
