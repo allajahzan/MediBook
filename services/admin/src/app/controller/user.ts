@@ -7,6 +7,7 @@ import {
 } from "@mb-medibook/common";
 import User, { DoctorStatus } from "../schema/user";
 import { NextFunction, Request, Response } from "express";
+import { UserStatusProducer } from "../messaging/producer/user.status";
 
 // get clients
 export const getClients = async (
@@ -68,6 +69,9 @@ export const blockAndUnblock = async (
 
         user.isBlock ? (user.isBlock = false) : (user.isBlock = true);
         const updatedUser = await user.save();
+
+        // send message to exchange
+        new UserStatusProducer(user).publish()
 
         SendResponse(res, HttpStatusCode.OK, ResponseMessage.SUCCESS, updatedUser);
     } catch (err) {

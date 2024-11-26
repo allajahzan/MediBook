@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 import { MongoDBConnection } from "@mb-medibook/common";
 import { envChecker } from "./config/env.check";
 import { rabbitmq } from "./config/rabbitmq";
+import { UserStatusConsumer } from "./app/messaging/consumer/user.status";
 
 // dotenv config
 dotenv.config();
@@ -14,6 +15,7 @@ const startServer = async (): Promise<void> => {
 
         // rabbimq connection
         await rabbitmq.connect();
+        new UserStatusConsumer().consume()
 
         // mongodb connecion
         await MongoDBConnection(process.env.MONGO_URL as string);

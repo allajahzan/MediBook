@@ -28,7 +28,7 @@ export const userLogin = async (
         if (!user) throw new NotFoundError();
 
         if (user.isBlock)
-            throw new Unauthorized("Your accound has been blocked by admin");
+            throw new Unauthorized("Your account has been blocked by admin");
 
         const verifyPassword = VerifyPassword(password, user.password);
         if (!verifyPassword)
