@@ -1,9 +1,11 @@
 import amqp from "amqplib";
 import { rabbitmq } from "../../../config/rabbitmq";
+import { Queues } from "../queues";
+import { Exchanges } from "../exchanges";
 import User from "../../schema/user";
+import { RoutingKey } from "../routingKey";
 
 export class UserCreatedConsumer {
-    private _queue: string = "ADMIN_SIGNUP_QUEUE";
     private _channel: amqp.Channel = rabbitmq.channel;
 
     constructor(channel: amqp.Channel) {
@@ -12,24 +14,24 @@ export class UserCreatedConsumer {
 
     async consume() {
         try {
-            this._channel.assertExchange(rabbitmq.SIGNUP_EXCHANGE, "direct", {
+            this._channel.assertExchange(Exchanges.SIGNUP_EXCHANGE, "direct", {
                 durable: true,
             });
-            this._channel.assertQueue(this._queue, { durable: true });
+            this._channel.assertQueue(Queues.ADMIN_SIGNUP_QUEUE, { durable: true });
 
             this._channel.bindQueue(
-                this._queue,
-                rabbitmq.SIGNUP_EXCHANGE,
-                "client.signup"
+                Queues.ADMIN_SIGNUP_QUEUE,
+                Exchanges.SIGNUP_EXCHANGE,
+                RoutingKey.CLIENT_SIGNUP
             );
             this._channel.bindQueue(
-                this._queue,
-                rabbitmq.SIGNUP_EXCHANGE,
-                "doctor.signup"
+                Queues.ADMIN_SIGNUP_QUEUE,
+                Exchanges.SIGNUP_EXCHANGE,
+                RoutingKey.DOCTOR_SIGNUP
             );
 
             this._channel.consume(
-                this._queue,
+                Queues.ADMIN_SIGNUP_QUEUE,
                 async (data: amqp.ConsumeMessage | null) => {
                     try {
                         if (!data) throw new Error("recieved null message");
