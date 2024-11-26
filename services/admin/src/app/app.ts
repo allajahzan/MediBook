@@ -10,10 +10,6 @@ const app = express();
 // middlewares
 app.use(morgan("dev"));
 app.use(express.json());
-app.use((req,res,next)=>{
-    console.log('asdf');
-    
-})
 app.use("/", checkAuth,appRouter);
 
 // error handler

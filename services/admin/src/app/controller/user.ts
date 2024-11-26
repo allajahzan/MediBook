@@ -15,7 +15,7 @@ export const getClients = async (
     next: NextFunction
 ): Promise<any> => {
     try {
-        const clients = await User.find({ role: "clients" });
+        const clients = await User.find({ role: "client" });
         SendResponse(res, HttpStatusCode.OK, ResponseMessage.SUCCESS, clients);
     } catch (err) {
         next(err);
@@ -43,9 +43,9 @@ export const getDoctor = async (
     next: NextFunction
 ): Promise<any> => {
     try {
-        const docId = req.params.id;
+        const userId = req.params.id;
 
-        const doctor = await User.findById(docId);
+        const doctor = await User.findOne({userId});
         if (!doctor) throw new NotFoundError();
 
         SendResponse(res, HttpStatusCode.OK, ResponseMessage.SUCCESS, doctor);
@@ -63,7 +63,7 @@ export const blockAndUnblock = async (
     try {
         const userId = req.params.id;
 
-        const user = await User.findById(userId);
+        const user = await User.findOne({userId});
         if (!user) throw new NotFoundError();
 
         user.isBlock ? (user.isBlock = false) : (user.isBlock = true);
@@ -82,15 +82,15 @@ export const approveDoctor = async (
     next: NextFunction
 ): Promise<any> => {
     try {
-        const docId = req.params.id;
+        const userId = req.params.id;
 
-        const doctor = await User.findById(docId);
+        const doctor = await User.findOne({userId});
         if (!doctor) throw new NotFoundError();
 
-        doctor.status = DoctorStatus.REJECTED;
+        doctor.status = DoctorStatus.APPROVED;
         await doctor.save();
 
-        SendResponse(res, HttpStatusCode.OK, ResponseMessage.SUCCESS, null);
+        SendResponse(res, HttpStatusCode.OK, ResponseMessage.SUCCESS, doctor);
     } catch (err) {
         next(err);
     }
@@ -103,15 +103,15 @@ export const rejectDoctor = async (
     next: NextFunction
 ): Promise<any> => {
     try {
-        const docId = req.params.id;
+        const userId = req.params.id;
 
-        const doctor = await User.findById(docId);
+        const doctor = await User.findOne({userId});
         if (!doctor) throw new NotFoundError();
 
         doctor.status = DoctorStatus.REJECTED;
         await doctor.save();
 
-        SendResponse(res, HttpStatusCode.OK, ResponseMessage.SUCCESS, null);
+        SendResponse(res, HttpStatusCode.OK, ResponseMessage.SUCCESS, doctor);
     } catch (err) {
         next(err);
     }

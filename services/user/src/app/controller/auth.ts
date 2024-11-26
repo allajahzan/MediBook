@@ -36,7 +36,7 @@ export const userLogin = async (
             );
 
         const payload: JWTPayloadType = {
-            userid: user._id.toString(),
+            userId: user._id.toString(),
             role: user.role,
         };
 

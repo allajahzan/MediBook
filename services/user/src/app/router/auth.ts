@@ -7,9 +7,9 @@ const router = Router();
 router.post("/login", userLogin);
 
 // user singup
-router.post("/client/signup", clientSignup);
+router.post("/signup", clientSignup);
 
 // doctor singup
-router.post("/doctor/signup", doctorSignup);
+router.post("/signup/doctor", doctorSignup);
 
 export { router as authRoute };

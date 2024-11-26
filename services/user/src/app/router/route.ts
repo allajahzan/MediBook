@@ -4,6 +4,6 @@ import { authRoute } from "./auth";
 const router = Router()
 
 // user route
-router.use('/auth', authRoute)
+router.use('/', authRoute)
 
 export {router as appRouter}
