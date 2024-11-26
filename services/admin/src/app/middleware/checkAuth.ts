@@ -14,9 +14,9 @@ export const checkAuth = async (
         }
 
         const payload = JSON.parse(userPayload as string);
-        const { userId, role } = payload;
+        const { _id, role } = payload;
 
-        const user = await User.findOne({ userId, role });
+        const user = await User.findOne({ _id, role });
         if (!user) throw new NotFoundError();
 
         if (user.isBlock)

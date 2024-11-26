@@ -6,14 +6,12 @@ import {
     HashedPassword,
     HttpStatusCode,
     JWTPayloadType,
-    NotFoundError,
     ResponseMessage,
     SendResponse,
     Unauthorized,
     VerifyPassword,
 } from "@mb-medibook/common";
 import { UserCreatedProducer } from "../messaging/producer/user.created";
-import { rabbitmq } from "../../config/rabbitmq";
 
 // user login
 export const userLogin = async (
@@ -25,22 +23,16 @@ export const userLogin = async (
         const { email, password } = req.body;
 
         const user = await User.findOne({ email });
-        if (!user) throw new NotFoundError();
+        if (!user) throw new Unauthorized('Incorrect Email address');
 
         if (user.isBlock)
             throw new Unauthorized("Your account has been blocked by admin");
 
-        const verifyPassword = VerifyPassword(password, user.password);
-        if (!verifyPassword)
-            return SendResponse(
-                res,
-                HttpStatusCode.UNAUTHORIZED,
-                ResponseMessage.UNAUTHORIZED,
-                null
-            );
+        const verifyPassword = await VerifyPassword(password, user.password);
+        if (!verifyPassword) throw new Unauthorized('Incorrect password');
 
         const payload: JWTPayloadType = {
-            userId: user._id.toString(),
+            _id: user._id.toString(),
             role: user.role,
         };
 

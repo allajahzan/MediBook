@@ -1,5 +1,4 @@
 import {
-    ConflictError,
     HttpStatusCode,
     NotFoundError,
     ResponseMessage,
@@ -44,9 +43,9 @@ export const getDoctor = async (
     next: NextFunction
 ): Promise<any> => {
     try {
-        const userId = req.params.id;
+        const _id = req.params.id;
 
-        const doctor = await User.findOne({userId});
+        const doctor = await User.findById(_id);
         if (!doctor) throw new NotFoundError();
 
         SendResponse(res, HttpStatusCode.OK, ResponseMessage.SUCCESS, doctor);
@@ -62,9 +61,9 @@ export const blockAndUnblock = async (
     next: NextFunction
 ): Promise<any> => {
     try {
-        const userId = req.params.id;
+        const _id = req.params.id;
 
-        const user = await User.findOne({userId});
+        const user = await User.findById(_id);
         if (!user) throw new NotFoundError();
 
         user.isBlock ? (user.isBlock = false) : (user.isBlock = true);
@@ -86,9 +85,9 @@ export const approveDoctor = async (
     next: NextFunction
 ): Promise<any> => {
     try {
-        const userId = req.params.id;
+        const _id = req.params.id;
 
-        const doctor = await User.findOne({userId});
+        const doctor = await User.findById(_id);
         if (!doctor) throw new NotFoundError();
 
         doctor.status = DoctorStatus.APPROVED;
@@ -107,9 +106,9 @@ export const rejectDoctor = async (
     next: NextFunction
 ): Promise<any> => {
     try {
-        const userId = req.params.id;
+        const _id = req.params.id;
 
-        const doctor = await User.findOne({userId});
+        const doctor = await User.findById(_id);
         if (!doctor) throw new NotFoundError();
 
         doctor.status = DoctorStatus.REJECTED;
