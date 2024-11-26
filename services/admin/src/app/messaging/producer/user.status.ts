@@ -2,17 +2,17 @@ import { Exchanges } from "@mb-medibook/common";
 import { rabbitmq } from "../../../config/rabbitmq";
 
 export class UserStatusProducer {
-    private userId: any = null;
+    private _id: any = null;
     private isBlock: any = null;
 
     constructor(user: any) {
-        this.userId = user.userId;
+        this._id = user._id;
         this.isBlock = user.isBlock;
     }
 
     publish() {
         try {
-            if (!this.userId) throw new Error("No user");
+            if (!this._id) throw new Error("No user");
 
             rabbitmq.channel.assertExchange(Exchanges.STATUS_EXCHANGE, "fanout", {
                 durable: true,
@@ -22,7 +22,7 @@ export class UserStatusProducer {
                 Exchanges.STATUS_EXCHANGE,
                 "",
                 Buffer.from(
-                    JSON.stringify({ userId: this.userId, isBlock: this.isBlock })
+                    JSON.stringify({ _id: this._id, isBlock: this.isBlock })
                 ),
                 { persistent: true }
             );

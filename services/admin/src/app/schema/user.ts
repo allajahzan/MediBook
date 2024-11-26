@@ -6,7 +6,6 @@ export enum DoctorStatus {
 }
 
 export interface UserType {
-    userId: string;
     name: string;
     email: string;
     role: string;
@@ -16,10 +15,6 @@ export interface UserType {
 
 const userSchema = new Schema<UserType>(
     {
-        userId: {
-            type: String,
-            required: true,
-        },
         name: {
             type: String,
             required: true,

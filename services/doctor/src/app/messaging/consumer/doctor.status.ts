@@ -26,9 +26,9 @@ export class DoctorStatusConsumer {
                     try {
                         if (!data) throw new Error("recieved null message");
 
-                        const { userId, isBlock } = JSON.parse(data.content as any);
+                        const { _id, isBlock } = JSON.parse(data.content as any);
 
-                        const doctor = await Doctor.findOne({ userId: userId });
+                        const doctor = await Doctor.findById(_id);
                         if (!doctor) throw new Error("No user found");
 
                         doctor.isBlock = isBlock;

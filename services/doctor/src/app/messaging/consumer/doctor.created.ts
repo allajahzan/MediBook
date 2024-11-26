@@ -28,7 +28,7 @@ export class DoctorCreatedConsumer {
                         const doctor = JSON.parse(data?.content as any);
 
                         const newDoctor = new Doctor({
-                            _id : doctor.userId,
+                            _id : doctor._id,
                             name: doctor.name,
                             email: doctor.email,
                             isBlock: doctor.isBlock,

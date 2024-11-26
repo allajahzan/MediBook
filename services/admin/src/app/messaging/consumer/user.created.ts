@@ -33,11 +33,11 @@ export class UserCreatedConsumer {
                         const user = JSON.parse(data.content as any);
 
                         const newUser = new User({
+                            _id : user._id,
                             name: user.name,
                             email: user.email,
                             isBlock: user.isBlock,
                             role: user.role,
-                            userId: user._id,
                             status: user.role === "client" ? null : "pending",
                         });
                         await newUser.save();

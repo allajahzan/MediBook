@@ -26,9 +26,9 @@ export class UserStatusConsumer {
                     try {
                         if (!data) throw new Error("recieved null message");
 
-                        const { userId, isBlock } = JSON.parse(data.content as any);
+                        const { _id, isBlock } = JSON.parse(data.content as any);
 
-                        const user = await User.findById(userId);
+                        const user = await User.findById(_id);
                         if (!user) throw new Error("No user found");
 
                         user.isBlock = isBlock;
