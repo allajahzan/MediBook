@@ -15,7 +15,7 @@ const startServer = async (): Promise<void> => {
 
         // rabbitmq connection
         await rabbitmq.connect();
-        new UserCreatedConsumer(rabbitmq.channel).consume();
+        new UserCreatedConsumer(rabbitmq.channel).consume()
 
         // mongodb connection
         await MongoDBConnection(process.env.MONGO_URL as string);

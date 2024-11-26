@@ -2,6 +2,8 @@ import { RabbitMQConnection } from "@mb-medibook/common";
 import amqp from "amqplib";
 
 class RabbitMQ {
+    SIGNUP_EXCHANGE = "user-signup-exchange";
+    
     private _channel: amqp.Channel | null = null;
 
     constructor() { }

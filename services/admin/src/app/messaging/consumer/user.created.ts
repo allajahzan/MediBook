@@ -3,20 +3,30 @@ import { rabbitmq } from "../../../config/rabbitmq";
 import User from "../../schema/user";
 
 export class UserCreatedConsumer {
-    private _queue: string = "USER.CREATED";
-    private _exchange: string = "user.created";
+    private _queue: string = "ADMIN_SIGNUP_QUEUE";
     private _channel: amqp.Channel = rabbitmq.channel;
 
     constructor(channel: amqp.Channel) {
         this._channel = channel;
     }
 
-    consume() {
+    async consume() {
         try {
-            this._channel.assertExchange(this._exchange, "fanout", { durable: true });
+            this._channel.assertExchange(rabbitmq.SIGNUP_EXCHANGE, "direct", {
+                durable: true,
+            });
             this._channel.assertQueue(this._queue, { durable: true });
 
-            this._channel.bindQueue(this._queue, this._exchange, "");
+            this._channel.bindQueue(
+                this._queue,
+                rabbitmq.SIGNUP_EXCHANGE,
+                "client.signup"
+            );
+            this._channel.bindQueue(
+                this._queue,
+                rabbitmq.SIGNUP_EXCHANGE,
+                "doctor.signup"
+            );
 
             this._channel.consume(
                 this._queue,
