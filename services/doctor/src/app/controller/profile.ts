@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from "express";
 import Profile from "../schema/profile";
 import { DoctorProfileCreatedProducer } from "../messaging/producer/docProfile.created";
 import {
+    ConflictError,
     HttpStatusCode,
     ResponseMessage,
     SendResponse,
@@ -18,6 +19,9 @@ export const addProfile = async (
         const userPayload = req.headers["x-user-payload"];
         const payload = JSON.parse(userPayload as string);
         const { _id, role } = payload;
+
+        const isProfile = await Profile.findOne({ userId: _id });
+        if (isProfile) throw new ConflictError("This profile already exists");
 
         const profile = new Profile({
             userId: _id,
