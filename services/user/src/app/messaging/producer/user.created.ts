@@ -1,3 +1,4 @@
+import { Exchanges, RoutingKey } from "@mb-medibook/common";
 import { rabbitmq } from "../../../config/rabbitmq";
 
 export class UserCreatedProducer {
@@ -12,14 +13,16 @@ export class UserCreatedProducer {
             if (!this.user) throw new Error("No user");
 
             const routingKey =
-                this.user.role === "client" ? "client.signup" : "doctor.signup";
+                this.user.role === "client"
+                    ? RoutingKey.CLIENT_SIGNUP
+                    : RoutingKey.CLIENT_SIGNUP;
 
-            rabbitmq.channel.assertExchange(rabbitmq.SIGNUP_EXCHANGE, "direct", {
+            rabbitmq.channel.assertExchange(Exchanges.SIGNUP_EXCHANGE, "direct", {
                 durable: true,
             });
 
             rabbitmq.channel.publish(
-                rabbitmq.SIGNUP_EXCHANGE,
+                Exchanges.SIGNUP_EXCHANGE,
                 routingKey,
                 Buffer.from(JSON.stringify(this.user))
             );

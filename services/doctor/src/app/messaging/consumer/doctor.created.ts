@@ -1,50 +1,46 @@
 import amqp from "amqplib";
 import { rabbitmq } from "../../../config/rabbitmq";
-import User from "../../schema/doctor";
+import Doctor from "../../schema/doctor";
+import { Queues } from "@mb-medibook/common";
 
 export class DoctorCreatedConsumer {
-    private _queue: string = "DOCTOR_SIGNUP_QUEUE";
-    private _channel: amqp.Channel = rabbitmq.channel;
-
-    constructor(channel: amqp.Channel) {
-        this._channel = channel;
-    }
-
     consume() {
         try {
-            this._channel.assertExchange(rabbitmq.SIGNUP_EXCHANGE, "direct", {
+            rabbitmq.channel.assertExchange(rabbitmq.SIGNUP_EXCHANGE, "direct", {
                 durable: true,
             });
-            this._channel.assertQueue(this._queue, { durable: true });
+            rabbitmq.channel.assertQueue(Queues.DOCTOR_SIGNUP_QUEUE, {
+                durable: true,
+            });
 
-            this._channel.bindQueue(
-                this._queue,
+            rabbitmq.channel.bindQueue(
+                Queues.DOCTOR_SIGNUP_QUEUE,
                 rabbitmq.SIGNUP_EXCHANGE,
                 "doctor.signup"
             );
 
-            this._channel.consume(
-                this._queue,
+            rabbitmq.channel.consume(
+                Queues.DOCTOR_SIGNUP_QUEUE,
                 async (data: amqp.ConsumeMessage | null) => {
                     try {
                         if (!data) throw new Error("recieved null message");
 
-                        const user = JSON.parse(data?.content as any);
+                        const doctor = JSON.parse(data?.content as any);
 
-                        const newUser = new User({
-                            name: user.name,
-                            email: user.email,
-                            isBlock: user.isBlock,
-                            role: user.role,
-                            userId: user._id,
+                        const newDoctor = new Doctor({
+                            name: doctor.name,
+                            email: doctor.email,
+                            isBlock: doctor.isBlock,
+                            role: doctor.role,
+                            userId: doctor._id,
                             status: "pending",
                         });
-                        await newUser.save();
+                        await newDoctor.save();
 
-                        this._channel.ack(data as amqp.ConsumeMessage);
+                        rabbitmq.channel.ack(data as amqp.ConsumeMessage);
                         console.log("data stored to db");
                     } catch (err) {
-                        this._channel.nack(data as amqp.ConsumeMessage, false, true);
+                        rabbitmq.channel.nack(data as amqp.ConsumeMessage, false, true);
                         console.log(err);
                     }
                 }

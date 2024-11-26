@@ -1,5 +1,5 @@
+import { Exchanges } from "@mb-medibook/common";
 import { rabbitmq } from "../../../config/rabbitmq";
-import { Exchanges } from "../exchanges";
 
 export class UserStatusProducer {
     private userId: any = null;

@@ -1,6 +1,6 @@
 import { model, Schema } from "mongoose";
 
-export interface UserType {
+export interface DoctorType {
     userId: string;
     name: string;
     email: string;
@@ -9,7 +9,7 @@ export interface UserType {
     status: string | null;
 }
 
-const userSchema = new Schema<UserType>(
+const doctorSchema = new Schema<DoctorType>(
     {
         userId: {
             type: String,
@@ -39,5 +39,5 @@ const userSchema = new Schema<UserType>(
     { timestamps: true }
 );
 
-const User = model<UserType>("Doctor", userSchema);
-export default User;
+const Doctor = model<DoctorType>("Doctor", doctorSchema);
+export default Doctor;
