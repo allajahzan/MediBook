@@ -2,12 +2,14 @@ import { RabbitMQConnection } from "@mb-medibook/common";
 import amqp from "amqplib";
 
 class RabbitMQ {
+    SIGNUP_EXCHANGE = "user-signup-exchange";
+
     private _channel: amqp.Channel | null = null;
 
     constructor() { }
 
     // get channel
-    get channel() : amqp.Channel {
+    get channel(): amqp.Channel {
         if (!this._channel)
             throw new Error("cannot access rabbitmq before connection");
         return this._channel;

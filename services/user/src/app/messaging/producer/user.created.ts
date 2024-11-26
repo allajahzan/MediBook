@@ -2,25 +2,32 @@ import amqp from "amqplib";
 import { rabbitmq } from "../../../config/rabbitmq";
 
 export class UserCreatedProducer {
-    private _exchange: string = "user.created";
     private _channel: amqp.Channel = rabbitmq.channel;
-    private data: any;
+    private user: any = null;
 
-    constructor(channel: amqp.Channel, data: any) {
-        this._channel = channel;
-        this.data = data;
+    constructor(user: any) {
+        this.user = user;
     }
 
     publish() {
         try {
-            this._channel.assertExchange(this._exchange, "fanout", { durable: true });
+            if (!this.user) throw new Error("No user");
+
+            const routingKey =
+                this.user.role === "client" ? "client.signup" : "doctor.signup";
+
+            this._channel.assertExchange(rabbitmq.SIGNUP_EXCHANGE, "direct", {
+                durable: true,
+            });
+
             this._channel.publish(
-                this._exchange,
-                "",
-                Buffer.from(JSON.stringify(this.data))
+                rabbitmq.SIGNUP_EXCHANGE,
+                routingKey,
+                Buffer.from(JSON.stringify(this.user))
             );
             console.log("send message to exchange");
         } catch (err: any) {
+            console.log(err);
             throw new Error(err);
         }
     }

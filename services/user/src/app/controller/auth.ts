@@ -79,7 +79,7 @@ export const clientSignup = async (
         await newUser.save();
 
         // rabbitmq producer
-        new UserCreatedProducer(rabbitmq.channel, newUser).publish()
+        new UserCreatedProducer(newUser).publish()
 
         SendResponse(res, HttpStatusCode.CREATED, ResponseMessage.CREATED, newUser);
     } catch (err) {
@@ -111,7 +111,7 @@ export const doctorSignup = async (
         await newUser.save();
 
         // rabbitmq producer
-        new UserCreatedProducer(rabbitmq.channel, newUser).publish()
+        new UserCreatedProducer(newUser).publish()
 
         SendResponse(res, HttpStatusCode.CREATED, ResponseMessage.CREATED, newUser);
     } catch (err) {
