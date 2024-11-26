@@ -1,4 +1,5 @@
 import { Request, Response, NextFunction } from "express";
+import Profile from "../schema/profile";
 
 // add profile
 export const addProfile = async (
@@ -7,13 +8,15 @@ export const addProfile = async (
     next: NextFunction
 ): Promise<any> => {
     try {
-        const { name, hospital, place, specializaion, dates, time } = req.body;
+        const { hospital, place, specialization, dates, time } = req.body;
         const userPayload = req.headers["x-user-payload"];
         const payload = JSON.parse(userPayload as string);
-        const { userId, role } = payload;
+        const { _id, role } = payload;
+
+        const profile = new Profile({userId:_id,hospital,place,specialization,dates,time})
+        await profile.save()
 
         
-
 
     } catch (err) {
         next(err);

@@ -1,7 +1,7 @@
 import { model, Schema } from "mongoose";
 
 export interface ProfileType {
-    userId: string;
+    userId: Schema.Types.ObjectId;
     hospital: string;
     place: string;
     specialization: string;
@@ -13,7 +13,8 @@ export interface ProfileType {
 const profileSchema = new Schema<ProfileType>(
     {
         userId: {
-            type: String,
+            type: Schema.Types.ObjectId,
+            ref: "Doctor",
             required: true,
         },
         hospital: {
