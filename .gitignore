@@ -27,3 +27,10 @@ services/admin/.env
 services/admin/node_modules
 services/admin/.gitignore
 services/admin/README.md
+
+
+#admin
+services/doctor/.env
+services/doctor/node_modules
+services/doctor/.gitignore
+services/doctor/README.md

@@ -1,0 +1,31 @@
+{
+  "name": "doctor",
+  "version": "1.0.0",
+  "description": "doctor service",
+  "main": "server.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "ts-node src/server.ts",
+    "dev": "nodemon src/server.ts"
+  },
+  "author": "allaj",
+  "license": "ISC",
+  "dependencies": {
+    "@mb-medibook/common": "^1.0.47",
+    "amqplib": "^0.10.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.21.1",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.8.2",
+    "morgan": "^1.10.0"
+  },
+  "devDependencies": {
+    "@types/amqplib": "^0.10.5",
+    "@types/express": "^5.0.0",
+    "@types/jsonwebtoken": "^9.0.7",
+    "@types/mongoose": "^5.11.96",
+    "@types/morgan": "^1.9.9",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.7.2"
+  }
+}

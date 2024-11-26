@@ -1,15 +1,16 @@
 import express from "express";
-import { appRouter } from "./router/router";
 import morgan from "morgan";
+import { appRouter } from "./router/router";
 import { ErrorHandler } from "@mb-medibook/common";
+import { checkAuth } from "./middleware/checkAuth";
 
-// create an app
+// create app
 const app = express();
 
-// middlewares
+// middleware
 app.use(morgan("dev"));
 app.use(express.json());
-app.use("/", appRouter);
+app.use("/", checkAuth, appRouter);
 
 // error handler
 app.use(ErrorHandler);
