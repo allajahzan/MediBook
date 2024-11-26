@@ -6,6 +6,7 @@ import { Exchanges, Queues } from "@mb-medibook/common";
 export class UserStatusConsumer {
     consume() {
         try {
+            rabbitmq.channel.deleteExchange(Exchanges.STATUS_EXCHANGE)
             rabbitmq.channel.assertExchange(Exchanges.STATUS_EXCHANGE, "fanout", {
                 durable: true,
             });

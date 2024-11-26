@@ -1,6 +1,11 @@
 import { Request, Response, NextFunction } from "express";
 import Profile from "../schema/profile";
 import { DoctorProfileCreatedProducer } from "../messaging/producer/docProfile.created";
+import {
+    HttpStatusCode,
+    ResponseMessage,
+    SendResponse,
+} from "@mb-medibook/common";
 
 // add profile
 export const addProfile = async (
@@ -14,12 +19,20 @@ export const addProfile = async (
         const payload = JSON.parse(userPayload as string);
         const { _id, role } = payload;
 
-        const profile = new Profile({userId:_id,hospital,place,specialization,dates,time})
-        await profile.save()
+        const profile = new Profile({
+            userId: _id,
+            hospital,
+            place,
+            specialization,
+            dates,
+            time,
+        });
+        await profile.save();
 
         // send message to exchange
-        new DoctorProfileCreatedProducer(profile).publish()
+        new DoctorProfileCreatedProducer(profile).publish();
 
+        SendResponse(res, HttpStatusCode.CREATED, ResponseMessage.CREATED, profile);
     } catch (err) {
         next(err);
     }

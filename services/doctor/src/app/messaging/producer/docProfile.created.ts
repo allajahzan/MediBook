@@ -17,7 +17,7 @@ export class DoctorProfileCreatedProducer {
             });
 
             rabbitmq.channel.publish(
-                Exchanges.STATUS_EXCHANGE,
+                Exchanges.PROFILE_EXCHANGE,
                 RoutingKey.DOCTOR_PROFILE_CREATE,
                 Buffer.from(JSON.stringify(this._profile)),
                 { persistent: true }

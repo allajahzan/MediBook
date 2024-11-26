@@ -4,9 +4,9 @@ import { addProfile, editProfile } from "../controller/profile";
 const route = Router();
 
 // add profile
-route.get("/add", addProfile);
+route.post("/add", addProfile);
 
 // edit profile
-route.post("/edit", editProfile);
+route.patch("/edit", editProfile);
 
 export { route as profileRoute };
