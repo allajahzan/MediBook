@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import Profile from "../schema/profile";
+import { DoctorProfileCreatedProducer } from "../messaging/producer/docProfile.created";
 
 // add profile
 export const addProfile = async (
@@ -16,7 +17,8 @@ export const addProfile = async (
         const profile = new Profile({userId:_id,hospital,place,specialization,dates,time})
         await profile.save()
 
-        
+        // send message to exchange
+        new DoctorProfileCreatedProducer(profile).publish()
 
     } catch (err) {
         next(err);

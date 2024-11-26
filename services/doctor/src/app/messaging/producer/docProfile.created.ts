@@ -10,7 +10,7 @@ export class DoctorProfileCreatedProducer {
 
     publish() {
         try {
-            if (!this._profile) throw new Error("No user");
+            if (!this._profile) throw new Error("No Profile");
 
             rabbitmq.channel.assertExchange(Exchanges.PROFILE_EXCHANGE, "direct", {
                 durable: true,
