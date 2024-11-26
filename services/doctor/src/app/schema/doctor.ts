@@ -39,5 +39,5 @@ const userSchema = new Schema<UserType>(
     { timestamps: true }
 );
 
-const User = model<UserType>("User", userSchema);
+const User = model<UserType>("Doctor", userSchema);
 export default User;

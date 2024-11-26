@@ -19,6 +19,9 @@ export const checkAuth = async (
         const user = await User.findOne({ userId, role });
         if (!user) throw new NotFoundError();
 
+        if (user.isBlock)
+            throw new Unauthorized("Your account has been blocked by admin");
+
         next();
     } catch (err) {
         next(err);

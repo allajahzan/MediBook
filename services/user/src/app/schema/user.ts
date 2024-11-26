@@ -5,6 +5,7 @@ interface userType {
     email: string;
     password: string;
     role: string;
+    isBlock : boolean,
 }
 
 const userSchema = new Schema<userType>(
@@ -25,6 +26,10 @@ const userSchema = new Schema<userType>(
             type: String,
             required: true,
         },
+        isBlock : {
+            type: Boolean,
+            default : false
+        }
     },
     { timestamps: true }
 );

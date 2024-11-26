@@ -9,6 +9,7 @@ import {
     NotFoundError,
     ResponseMessage,
     SendResponse,
+    Unauthorized,
     VerifyPassword,
 } from "@mb-medibook/common";
 import { UserCreatedProducer } from "../messaging/producer/user.created";
@@ -25,6 +26,9 @@ export const userLogin = async (
 
         const user = await User.findOne({ email });
         if (!user) throw new NotFoundError();
+
+        if (user.isBlock)
+            throw new Unauthorized("Your accound has been blocked by admin");
 
         const verifyPassword = VerifyPassword(password, user.password);
         if (!verifyPassword)
@@ -79,7 +83,7 @@ export const clientSignup = async (
         await newUser.save();
 
         // rabbitmq producer
-        new UserCreatedProducer(newUser).publish()
+        new UserCreatedProducer(newUser).publish();
 
         SendResponse(res, HttpStatusCode.CREATED, ResponseMessage.CREATED, newUser);
     } catch (err) {
@@ -111,7 +115,7 @@ export const doctorSignup = async (
         await newUser.save();
 
         // rabbitmq producer
-        new UserCreatedProducer(newUser).publish()
+        new UserCreatedProducer(newUser).publish();
 
         SendResponse(res, HttpStatusCode.CREATED, ResponseMessage.CREATED, newUser);
     } catch (err) {
