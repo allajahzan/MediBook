@@ -7,7 +7,7 @@ export class UserStatusProducer {
 
     constructor(user: any) {
         this.userId = user.userId;
-        this.isBlock = user.isBlock
+        this.isBlock = user.isBlock;
     }
 
     publish() {
@@ -21,7 +21,10 @@ export class UserStatusProducer {
             rabbitmq.channel.publish(
                 Exchanges.STATUS_EXCHANGE,
                 "",
-                Buffer.from(JSON.stringify({ userId: this.userId, isBlock : this.isBlock }))
+                Buffer.from(
+                    JSON.stringify({ userId: this.userId, isBlock: this.isBlock })
+                ),
+                { persistent: true }
             );
             console.log("send message to exchange");
         } catch (err: any) {

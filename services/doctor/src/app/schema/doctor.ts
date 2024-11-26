@@ -1,7 +1,7 @@
 import { model, Schema } from "mongoose";
 
 export interface DoctorType {
-    userId: string;
+    userId?: string;
     name: string;
     email: string;
     role: string;
@@ -11,10 +11,6 @@ export interface DoctorType {
 
 const doctorSchema = new Schema<DoctorType>(
     {
-        userId: {
-            type: String,
-            required: true,
-        },
         name: {
             type: String,
             required: true,

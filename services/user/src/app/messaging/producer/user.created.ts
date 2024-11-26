@@ -15,7 +15,7 @@ export class UserCreatedProducer {
             const routingKey =
                 this.user.role === "client"
                     ? RoutingKey.CLIENT_SIGNUP
-                    : RoutingKey.CLIENT_SIGNUP;
+                    : RoutingKey.DOCTOR_SIGNUP;
 
             rabbitmq.channel.assertExchange(Exchanges.SIGNUP_EXCHANGE, "direct", {
                 durable: true,
@@ -24,7 +24,8 @@ export class UserCreatedProducer {
             rabbitmq.channel.publish(
                 Exchanges.SIGNUP_EXCHANGE,
                 routingKey,
-                Buffer.from(JSON.stringify(this.user))
+                Buffer.from(JSON.stringify(this.user)),
+                { persistent: true }
             );
             console.log("send message to exchange");
         } catch (err: any) {

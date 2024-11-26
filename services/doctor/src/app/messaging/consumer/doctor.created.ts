@@ -1,12 +1,12 @@
 import amqp from "amqplib";
 import { rabbitmq } from "../../../config/rabbitmq";
 import Doctor from "../../schema/doctor";
-import { Queues } from "@mb-medibook/common";
+import { Exchanges, Queues } from "@mb-medibook/common";
 
 export class DoctorCreatedConsumer {
     consume() {
         try {
-            rabbitmq.channel.assertExchange(rabbitmq.SIGNUP_EXCHANGE, "direct", {
+            rabbitmq.channel.assertExchange(Exchanges.SIGNUP_EXCHANGE, "direct", {
                 durable: true,
             });
             rabbitmq.channel.assertQueue(Queues.DOCTOR_SIGNUP_QUEUE, {
@@ -15,7 +15,7 @@ export class DoctorCreatedConsumer {
 
             rabbitmq.channel.bindQueue(
                 Queues.DOCTOR_SIGNUP_QUEUE,
-                rabbitmq.SIGNUP_EXCHANGE,
+                Exchanges.SIGNUP_EXCHANGE,
                 "doctor.signup"
             );
 
@@ -28,11 +28,11 @@ export class DoctorCreatedConsumer {
                         const doctor = JSON.parse(data?.content as any);
 
                         const newDoctor = new Doctor({
+                            _id : doctor.userId,
                             name: doctor.name,
                             email: doctor.email,
                             isBlock: doctor.isBlock,
                             role: doctor.role,
-                            userId: doctor._id,
                             status: "pending",
                         });
                         await newDoctor.save();
