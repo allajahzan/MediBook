@@ -8,6 +8,7 @@ import {
     SendResponse,
     Unauthorized,
 } from "@mb-medibook/common";
+import { DoctorProfileUpdatedProducer } from "../messaging/producer/docProfile.updated";
 
 // add profile
 export const addProfile = async (
@@ -32,7 +33,7 @@ export const addProfile = async (
             specialization,
             dates,
             timeFrom,
-            timeTo
+            timeTo,
         });
         await profile.save();
 
@@ -68,8 +69,10 @@ export const editProfile = async (
         profile.timeFrom = timeFrom;
         profile.timeTo = timeTo;
 
+        await profile.save();
+
         // send message to exchange
-        new DoctorProfileCreatedProducer(profile).publish();
+        new DoctorProfileUpdatedProducer(profile).publish();
 
         SendResponse(res, HttpStatusCode.CREATED, ResponseMessage.CREATED, profile);
     } catch (err) {
