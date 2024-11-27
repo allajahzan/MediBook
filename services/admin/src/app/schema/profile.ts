@@ -1,13 +1,19 @@
 import { model, Schema } from "mongoose";
 
+export enum DoctorStatus {
+    APPROVED = "approved",
+    REJECTED = "rejected",
+}
+
 export interface ProfileType {
     userId: Schema.Types.ObjectId;
     hospital: string;
     place: string;
     specialization: string;
     dates: string[];
-    time: string;
-    status: string | null;
+    timeFrom: Date;
+    timeTo: Date;
+    status: string;
 }
 
 const profileSchema = new Schema<ProfileType>(
@@ -33,13 +39,17 @@ const profileSchema = new Schema<ProfileType>(
             type: [String],
             required: false,
         },
-        time: {
-            type: String,
+        timeFrom: {
+            type: Date,
+            required: false,
+        },
+        timeTo: {
+            type: Date,
             required: false,
         },
         status: {
             type: String,
-            required: false,
+            default: "pending",
         },
     },
     { timestamps: true }

@@ -6,8 +6,9 @@ export interface ProfileType {
     place: string;
     specialization: string;
     dates: string[];
-    time: string;
-    status: string | null;
+    timeFrom: Date;
+    timeTo: Date;
+    status: string;
 }
 
 const profileSchema = new Schema<ProfileType>(
@@ -27,19 +28,23 @@ const profileSchema = new Schema<ProfileType>(
         },
         specialization: {
             type: String,
-            required: false,
+            required: true,
         },
         dates: {
             type: [String],
-            required: false,
+            required: true,
         },
-        time: {
-            type: String,
-            required: false,
+        timeFrom: {
+            type: Date,
+            required: true,
+        },
+        timeTo: {
+            type: Date,
+            required: true,
         },
         status: {
             type: String,
-            required: false,
+            default: "pending",
         },
     },
     { timestamps: true }

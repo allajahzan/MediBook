@@ -4,7 +4,7 @@ import {
     ResponseMessage,
     SendResponse,
 } from "@mb-medibook/common";
-import User, { DoctorStatus } from "../schema/user";
+import User from "../schema/user";
 import { NextFunction, Request, Response } from "express";
 import { UserStatusProducer } from "../messaging/producer/user.status";
 
@@ -90,7 +90,6 @@ export const approveDoctor = async (
         const doctor = await User.findById(_id);
         if (!doctor) throw new NotFoundError();
 
-        doctor.status = DoctorStatus.APPROVED;
         await doctor.save();
 
         SendResponse(res, HttpStatusCode.OK, ResponseMessage.SUCCESS, doctor);
@@ -111,7 +110,6 @@ export const rejectDoctor = async (
         const doctor = await User.findById(_id);
         if (!doctor) throw new NotFoundError();
 
-        doctor.status = DoctorStatus.REJECTED;
         await doctor.save();
 
         SendResponse(res, HttpStatusCode.OK, ResponseMessage.SUCCESS, doctor);

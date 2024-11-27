@@ -6,7 +6,6 @@ export interface DoctorType {
     email: string;
     role: string;
     isBlock: boolean;
-    status: string | null;
 }
 
 const doctorSchema = new Schema<DoctorType>(
@@ -26,10 +25,6 @@ const doctorSchema = new Schema<DoctorType>(
         isBlock: {
             type: Boolean,
             default: false,
-        },
-        status: {
-            type: String,
-            required: false,
         },
     },
     { timestamps: true }

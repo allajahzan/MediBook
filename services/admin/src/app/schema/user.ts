@@ -1,16 +1,10 @@
 import { model, Schema } from "mongoose";
 
-export enum DoctorStatus {
-    APPROVED = "approved",
-    REJECTED = "rejected",
-}
-
 export interface UserType {
     name: string;
     email: string;
     role: string;
     isBlock: boolean;
-    status: string | null;
 }
 
 const userSchema = new Schema<UserType>(
@@ -30,11 +24,7 @@ const userSchema = new Schema<UserType>(
         isBlock: {
             type: Boolean,
             default: false,
-        },
-        status: {
-            type: String,
-            required : false
-        },
+        }
     },
     { timestamps: true }
 );

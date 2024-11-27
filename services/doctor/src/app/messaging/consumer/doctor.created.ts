@@ -33,7 +33,6 @@ export class DoctorCreatedConsumer {
                             email: doctor.email,
                             isBlock: doctor.isBlock,
                             role: doctor.role,
-                            status: "pending",
                         });
                         await newDoctor.save();
 

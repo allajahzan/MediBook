@@ -6,6 +6,7 @@ import {
     HttpStatusCode,
     ResponseMessage,
     SendResponse,
+    Unauthorized,
 } from "@mb-medibook/common";
 
 // add profile
@@ -15,7 +16,8 @@ export const addProfile = async (
     next: NextFunction
 ): Promise<any> => {
     try {
-        const { hospital, place, specialization, dates, time } = req.body;
+        const { hospital, place, specialization, dates, timeFrom, timeTo } =
+            req.body;
         const userPayload = req.headers["x-user-payload"];
         const payload = JSON.parse(userPayload as string);
         const { _id, role } = payload;
@@ -29,7 +31,8 @@ export const addProfile = async (
             place,
             specialization,
             dates,
-            time,
+            timeFrom,
+            timeTo
         });
         await profile.save();
 
@@ -49,6 +52,26 @@ export const editProfile = async (
     next: NextFunction
 ): Promise<any> => {
     try {
+        const { hospital, place, specialization, dates, timeFrom, timeTo } =
+            req.body;
+        const userPayload = req.headers["x-user-payload"];
+        const payload = JSON.parse(userPayload as string);
+        const { _id, role } = payload;
+
+        const profile = await Profile.findOne({ userId: _id });
+        if (!profile) throw new Unauthorized("This profile doesn\t exists");
+
+        profile.hospital = hospital;
+        profile.place = place;
+        profile.specialization = specialization;
+        profile.dates = dates;
+        profile.timeFrom = timeFrom;
+        profile.timeTo = timeTo;
+
+        // send message to exchange
+        new DoctorProfileCreatedProducer(profile).publish();
+
+        SendResponse(res, HttpStatusCode.CREATED, ResponseMessage.CREATED, profile);
     } catch (err) {
         next(err);
     }

@@ -38,7 +38,6 @@ export class UserCreatedConsumer {
                             email: user.email,
                             isBlock: user.isBlock,
                             role: user.role,
-                            status: user.role === "client" ? null : "pending",
                         });
                         await newUser.save();
 
