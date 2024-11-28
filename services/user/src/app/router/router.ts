@@ -1,9 +1,20 @@
 import { Router } from "express";
 import { authRoute } from "./auth";
+import { doctorRoute } from "./doctor";
+import { checkAuth } from "../middleware/checkAuth";
+import { VerifyAccessToken } from "@mb-medibook/common";
 
-const router = Router()
+const router = Router();
 
 // user route
-router.use('/', authRoute)
+router.use("/auth", authRoute);
 
-export {router as appRouter}
+// doctor route
+router.use(
+    "/doctor",
+    VerifyAccessToken(process.env.ACCESS_TOKEN_SECRET as string),
+    checkAuth,
+    doctorRoute
+);
+
+export { router as appRouter };

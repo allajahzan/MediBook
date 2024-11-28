@@ -1,5 +1,7 @@
 import { RabbitMQConnection } from "@mb-medibook/common";
 import amqp from "amqplib";
+import { DoctorProfileConsumer } from "../app/messaging/consumer/docProfile.consumer";
+import { UserCreatedConsumer } from "../app/messaging/consumer/user.created";
 
 class RabbitMQ {
     private _channel: amqp.Channel | null = null;
@@ -23,6 +25,11 @@ class RabbitMQ {
                 this._channel = null;
                 this.connect();
             });
+
+            // consume messages
+            new UserCreatedConsumer().consume()
+            new DoctorProfileConsumer().consume()
+
         } catch (err: any) {
             throw new Error(err);
         }
