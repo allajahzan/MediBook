@@ -1,11 +1,11 @@
 import { Exchanges, RoutingKey } from "@mb-medibook/common";
 import { rabbitmq } from "../../../config/rabbitmq";
 
-export class UserStatusProducer {
-    private user = null
+export class ProfileStatusProducer {
+    private user = null;
 
     constructor(user: any) {
-        this.user = user
+        this.user = user;
     }
 
     publish() {
@@ -18,12 +18,11 @@ export class UserStatusProducer {
 
             rabbitmq.channel.publish(
                 Exchanges.STATUS_EXCHANGE,
-                RoutingKey.USER_STATUS,
-                Buffer.from(
-                    JSON.stringify(this.user)
-                ),
+                RoutingKey.PROFILE_STATUS,
+                Buffer.from(JSON.stringify(this.user)),
                 { persistent: true }
             );
+
             console.log("send message to exchange");
         } catch (err: any) {
             console.log(err);

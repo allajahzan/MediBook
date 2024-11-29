@@ -1,7 +1,7 @@
 import { RabbitMQConnection } from "@mb-medibook/common";
 import amqp from "amqplib";
 import { DoctorCreatedConsumer } from "../app/messaging/consumer/doctor.created";
-import { DoctorStatusConsumer } from "../app/messaging/consumer/doctor.status";
+import { DoctorStatusConsumer } from "../app/messaging/consumer/status.change";
 
 class RabbitMQ {
     private _channel: amqp.Channel | null = null;

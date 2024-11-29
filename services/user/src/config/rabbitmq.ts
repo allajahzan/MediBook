@@ -1,6 +1,6 @@
 import { RabbitMQConnection } from "@mb-medibook/common";
 import amqp from "amqplib";
-import { UserStatusConsumer } from "../app/messaging/consumer/user.status";
+import { UserStatusConsumer } from "../app/messaging/consumer/status.change";
 import { DoctorProfileConsumer } from "../app/messaging/consumer/docProfile.consumer";
 
 class RabbitMQ {

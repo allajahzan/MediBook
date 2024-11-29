@@ -7,6 +7,8 @@ import {
 import User from "../schema/user";
 import { NextFunction, Request, Response } from "express";
 import { UserStatusProducer } from "../messaging/producer/user.status";
+import Profile from "../schema/profile";
+import { ProfileStatusProducer } from "../messaging/producer/profile.status";
 
 // get clients
 export const getClients = async (
@@ -70,7 +72,7 @@ export const blockAndUnblock = async (
         const updatedUser = await user.save();
 
         // send message to exchange
-        new UserStatusProducer(user).publish()
+        new UserStatusProducer(user).publish();
 
         SendResponse(res, HttpStatusCode.OK, ResponseMessage.SUCCESS, updatedUser);
     } catch (err) {
@@ -87,12 +89,16 @@ export const approveDoctor = async (
     try {
         const _id = req.params.id;
 
-        const doctor = await User.findById(_id);
-        if (!doctor) throw new NotFoundError();
+        const profile = await Profile.findOne({ userId: _id });
+        if (!profile) throw new NotFoundError();
 
-        await doctor.save();
+        profile.status = "approved";
+        await profile.save();
 
-        SendResponse(res, HttpStatusCode.OK, ResponseMessage.SUCCESS, doctor);
+        // send message to exchange
+        new ProfileStatusProducer(profile).publish();
+
+        SendResponse(res, HttpStatusCode.OK, ResponseMessage.SUCCESS, profile);
     } catch (err) {
         next(err);
     }

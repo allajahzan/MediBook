@@ -13,7 +13,7 @@ export const getDocProfiles = async (
     next: NextFunction
 ) => {
     try {
-        const profiles = await Profile.find({});
+        const profiles = await Profile.find({status : "approved"});
         SendResponse(res, HttpStatusCode.OK, ResponseMessage.SUCCESS, profiles);
     } catch (err) {
         next(err);
