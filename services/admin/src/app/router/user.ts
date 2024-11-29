@@ -23,9 +23,9 @@ router.get("/doctor/:id", getDoctor);
 router.patch("/user/:id/status", blockAndUnblock);
 
 // approve doctor
-router.post("/doctor/:id/approve", approveDoctor);
+router.patch("/doctor/:id/approve", approveDoctor);
 
 // reject doctor
-router.post("/doctor/:id/reject", rejectDoctor);
+router.patch("/doctor/:id/reject", rejectDoctor);
 
 export { router as userRoute };

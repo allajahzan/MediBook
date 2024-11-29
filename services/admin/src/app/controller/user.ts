@@ -113,12 +113,16 @@ export const rejectDoctor = async (
     try {
         const _id = req.params.id;
 
-        const doctor = await User.findById(_id);
-        if (!doctor) throw new NotFoundError();
+        const profile = await Profile.findOne({ userId: _id });
+        if (!profile) throw new NotFoundError();
 
-        await doctor.save();
+        profile.status = "rejected";
+        await profile.save();
 
-        SendResponse(res, HttpStatusCode.OK, ResponseMessage.SUCCESS, doctor);
+        // send message to exchange
+        new ProfileStatusProducer(profile).publish();
+
+        SendResponse(res, HttpStatusCode.OK, ResponseMessage.SUCCESS, profile);
     } catch (err) {
         next(err);
     }
