@@ -29,8 +29,14 @@ services/admin/.gitignore
 services/admin/README.md
 
 
-#admin
+#doctor
 services/doctor/.env
 services/doctor/node_modules
 services/doctor/.gitignore
 services/doctor/README.md
+
+#appointment
+services/appointment/.env
+services/appointment/node_modules
+services/appointment/.gitignore
+services/appointment/README.md
